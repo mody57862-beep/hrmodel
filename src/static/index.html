@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام الموارد البشرية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e1e5e9;
+        }
+
+        .logo h1 {
+            color: #333;
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #333;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        .nav-icon {
+            margin-left: 15px;
+            font-size: 1.2em;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .content-section {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e1e5e9;
+        }
+
+        .section-header h2 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .section-header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .btn-excel {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 15px;
+            text-align: right;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            font-weight: 600;
+        }
+
+        .data-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #4facfe;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .alert.error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert.info {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4facfe;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 95%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: left;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        /* Filter section */
+        .filter-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        /* Excel section */
+        .excel-section {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #28a745;
+        }
+
+        .excel-section h4 {
+            color: #155724;
+            margin-bottom: 15px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .file-input {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .file-input-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .import-result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .import-result.success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .import-result.error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1>🏢 نظام الموارد البشرية</h1>
+                <p>إدارة شؤون الموظفين</p>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-section="dashboard">
+                        <span class="nav-icon">📊</span>
+                        لوحة التحكم
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="employees">
+                        <span class="nav-icon">👥</span>
+                        إدارة الموظفين
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="reports">
+                        <span class="nav-icon">📈</span>
+                        التقارير الشهرية
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="leave-requests">
+                        <span class="nav-icon">🏖️</span>
+                        طلبات الإجازات
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="payroll">
+                        <span class="nav-icon">💰</span>
+                        الخصومات والمكافآت
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="attendance">
+                        <span class="nav-icon">⏰</span>
+                        الحضور والانصراف
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div id="alert" class="alert"></div>
+
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="content-section active">
+                <div class="section-header">
+                    <h2>لوحة التحكم</h2>
+                    <p>نظرة عامة على نظام الموارد البشرية</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-employees">-</div>
+                        <div class="stat-label">إجمالي الموظفين</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="pending-requests">-</div>
+                        <div class="stat-label">طلبات الإجازات المعلقة</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="avg-attendance">-</div>
+                        <div class="stat-label">متوسط ساعات العمل</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="departments-count">-</div>
+                        <div class="stat-label">عدد الأقسام</div>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <h3>الإجراءات السريعة</h3>
+                </div>
+                
+                <button class="btn" onclick="showSection('employees')">إضافة موظف جديد</button>
+                <button class="btn btn-secondary" onclick="showSection('leave-requests')">تقديم طلب إجازة</button>
+                <button class="btn btn-success" onclick="showSection('reports')">عرض التقارير</button>
+            </div>
+
+            <!-- Employees Section -->
+            <div id="employees" class="content-section">
+                <div class="section-header">
+                    <h2>إدارة الموظفين</h2>
+                    <p>إضافة وتعديل وعرض بيانات الموظفين</p>
+                </div>
+
+                <button class="btn" onclick="showAddEmployeeForm()">إضافة موظف جديد</button>
+                <button class="btn btn-secondary" onclick="loadEmployees()">تحديث القائمة</button>
+
+                <!-- Excel Import/Export Section -->
+                <div class="excel-section">
+                    <h4>📊 التكامل مع Excel</h4>
+                    <button class="btn btn-excel" onclick="exportToExcel()">📤 تصدير إلى Excel</button>
+                    
+                    <div class="file-input-wrapper">
+                        <input type="file" id="excel-file-input" class="file-input" accept=".xlsx,.xls" onchange="importFromExcel()">
+                        <label for="excel-file-input" class="file-input-label">📥 استيراد من Excel</label>
+                    </div>
+                    
+                    <div id="import-result" class="import-result"></div>
+                    
+                    <p style="margin-top: 10px; color: #6c757d; font-size: 0.9em;">
+                        💡 يمكنك تصدير البيانات الحالية إلى Excel، تعديلها، ثم استيرادها مرة أخرى لتحديث النظام.
+                    </p>
+                </div>
+
+                <!-- Filter Section -->
+                <div class="filter-section">
+                    <h4>فلترة الموظفين</h4>
+                    <div class="filter-grid">
+                        <div class="form-group">
+                            <label for="filter-department">القسم</label>
+                            <select id="filter-department" onchange="filterEmployees()">
+                                <option value="">جميع الأقسام</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filter-search">البحث</label>
+                            <input type="text" id="filter-search" placeholder="البحث بالاسم أو الرقم الوظيفي" onkeyup="filterEmployees()">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-secondary" onclick="clearFilters()">مسح الفلاتر</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>الإجراءات</th>
+                                <th>الراتب</th>
+                                <th>سنوات الخبرة</th>
+                                <th>القسم</th>
+                                <th>الوظيفة</th>
+                                <th>الاسم الكامل</th>
+                                <th>الرقم الوظيفي</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employees-table-body">
+                            <tr>
+                                <td colspan="7" class="loading">جاري تحميل بيانات الموظفين...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reports Section -->
+            <div id="reports" class="content-section">
+                <div class="section-header">
+                    <h2>التقارير الشهرية</h2>
+                    <p>تقارير شاملة عن أداء الموظفين والحضور</p>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="report-month">الشهر</label>
+                        <select id="report-month">
+                            <option value="">اختر الشهر</option>
+                            <option value="1">يناير</option>
+                            <option value="2">فبراير</option>
+                            <option value="3">مارس</option>
+                            <option value="4">أبريل</option>
+                            <option value="5">مايو</option>
+                            <option value="6">يونيو</option>
+                            <option value="7">يوليو</option>
+                            <option value="8">أغسطس</option>
+                            <option value="9">سبتمبر</option>
+                            <option value="10">أكتوبر</option>
+                            <option value="11">نوفمبر</option>
+                            <option value="12">ديسمبر</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="report-year">السنة</label>
+                        <select id="report-year">
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="generateReport()">إنشاء التقرير</button>
+                <button class="btn btn-secondary" onclick="exportReport()">تصدير التقرير</button>
+
+                <div id="report-content" class="alert info" style="display: none;">
+                    <h3>تقرير شهري مجمع</h3>
+                    <p>هذه الميزة قيد التطوير. سيتم عرض تقرير شامل يتضمن:</p>
+                    <ul style="margin: 15px 0; padding-right: 20px;">
+                        <li>إحصائيات الحضور والانصراف</li>
+                        <li>ملخص الإجازات المستخدمة</li>
+                        <li>تقييم أداء الموظفين</li>
+                        <li>الخصومات والمكافآت</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Leave Requests Section -->
+            <div id="leave-requests" class="content-section">
+                <div class="section-header">
+                    <h2>طلبات الإجازات</h2>
+                    <p>تقديم ومراجعة طلبات الإجازات</p>
+                </div>
+
+                <button class="btn" onclick="showLeaveRequestForm()">تقديم طلب إجازة جديد</button>
+                <button class="btn btn-secondary" onclick="loadLeaveRequests()">عرض جميع الطلبات</button>
+
+                <div id="leave-request-form" style="display: none; margin-top: 20px;">
+                    <h3>تقديم طلب إجازة</h3>
+                    <form id="leaveRequestForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="leave-department">القسم</label>
+                                <select id="leave-department" onchange="loadEmployeesByDepartment()" required>
+                                    <option value="">اختر القسم</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="leave-employee-select">اسم الموظف</label>
+                                <select id="leave-employee-select" required>
+                                    <option value="">اختر الموظف</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="leave-type">نوع الإجازة</label>
+                                <select id="leave-type" required>
+                                    <option value="">اختر نوع الإجازة</option>
+                                    <option value="annual">إجازة سنوية</option>
+                                    <option value="casual">إجازة عارضة</option>
+                                    <option value="sick">إجازة مرضية</option>
+                                    <option value="other">أخرى</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="leave-start-date">تاريخ البداية</label>
+                                <input type="date" id="leave-start-date" required onchange="calculateLeaveDays()">
+                            </div>
+                            <div class="form-group">
+                                <label for="leave-end-date">تاريخ النهاية</label>
+                                <input type="date" id="leave-end-date" required onchange="calculateLeaveDays()">
+                            </div>
+                            <div class="form-group">
+                                <label for="leave-days">عدد الأيام</label>
+                                <input type="number" id="leave-days" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="leave-reason">سبب الإجازة</label>
+                            <textarea id="leave-reason" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn">تقديم الطلب</button>
+                        <button type="button" class="btn btn-secondary" onclick="hideLeaveRequestForm()">إلغاء</button>
+                    </form>
+                </div>
+
+                <div id="leave-requests-list" style="display: none; margin-top: 20px;">
+                    <h3>قائمة طلبات الإجازات</h3>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>الحالة</th>
+                                    <th>عدد الأيام</th>
+                                    <th>تاريخ النهاية</th>
+                                    <th>تاريخ البداية</th>
+                                    <th>نوع الإجازة</th>
+                                    <th>اسم الموظف</th>
+                                    <th>الرقم الوظيفي</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leave-requests-table-body">
+                                <tr>
+                                    <td colspan="7" class="loading">جاري تحميل طلبات الإجازات...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payroll Section -->
+            <div id="payroll" class="content-section">
+                <div class="section-header">
+                    <h2>الخصومات والمكافآت</h2>
+                    <p>إدارة الخصومات والمكافآت للموظفين</p>
+                </div>
+
+                <button class="btn btn-success" onclick="showBonusForm()">إضافة مكافأة</button>
+                <button class="btn btn-warning" onclick="showDeductionForm()">إضافة خصم</button>
+                <button class="btn btn-secondary" onclick="viewPayrollHistory()">عرض السجل</button>
+
+                <div class="alert info" style="display: block; margin-top: 20px;">
+                    <h3>نظام الرواتب والمكافآت</h3>
+                    <p>هذا القسم قيد التطوير وسيتضمن:</p>
+                    <ul style="margin: 15px 0; padding-right: 20px;">
+                        <li>إدارة المكافآت الشهرية والسنوية</li>
+                        <li>تسجيل الخصومات (تأخير، غياب، إلخ)</li>
+                        <li>حساب الراتب الصافي</li>
+                        <li>إنشاء كشوف الرواتب</li>
+                        <li>تقارير مالية مفصلة</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Attendance Section -->
+            <div id="attendance" class="content-section">
+                <div class="section-header">
+                    <h2>الحضور والانصراف</h2>
+                    <p>متابعة حضور وانصراف الموظفين</p>
+                </div>
+
+                <button class="btn" onclick="recordAttendance()">تسجيل حضور</button>
+                <button class="btn btn-secondary" onclick="viewAttendanceReport()">تقرير الحضور</button>
+                <button class="btn btn-success" onclick="exportAttendance()">تصدير البيانات</button>
+
+                <div class="alert info" style="display: block; margin-top: 20px;">
+                    <h3>نظام الحضور والانصراف</h3>
+                    <p>يمكن ربط هذا القسم مع جهاز البصمة الموجود لديكم. الميزات المتاحة:</p>
+                    <ul style="margin: 15px 0; padding-right: 20px;">
+                        <li>تسجيل أوقات الدخول والخروج</li>
+                        <li>حساب ساعات العمل تلقائياً</li>
+                        <li>تتبع التأخير والغياب</li>
+                        <li>تقارير الحضور اليومية والشهرية</li>
+                        <li>تكامل مع أجهزة البصمة</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Employee -->
+    <div id="employeeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEmployeeModal()">&times;</span>
+            <h2 id="modal-title">إضافة موظف جديد</h2>
+            
+            <form id="employeeForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="employee_id">الرقم الوظيفي *</label>
+                        <input type="number" id="employee_id" name="employee_id" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="full_name">الاسم الكامل *</label>
+                        <input type="text" id="full_name" name="full_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="house_number">الدار</label>
+                        <input type="text" id="house_number" name="house_number">
+                    </div>
+                    <div class="form-group">
+                        <label for="national_id">الرقم القومي</label>
+                        <input type="text" id="national_id" name="national_id">
+                    </div>
+                    <div class="form-group">
+                        <label for="job_title">الوظيفة</label>
+                        <input type="text" id="job_title" name="job_title">
+                    </div>
+                    <div class="form-group">
+                        <label for="qualification">المؤهل</label>
+                        <input type="text" id="qualification" name="qualification">
+                    </div>
+                    <div class="form-group">
+                        <label for="hire_date">تاريخ التعيين</label>
+                        <input type="date" id="hire_date" name="hire_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="points_count">عدد الابناط</label>
+                        <input type="number" id="points_count" name="points_count" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="years_of_experience">سنوات الخبرة</label>
+                        <input type="number" id="years_of_experience" name="years_of_experience" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="salary_from_system">الراتب من المنظومة</label>
+                        <input type="number" id="salary_from_system" name="salary_from_system" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="actual_salary">الراتب</label>
+                        <input type="number" id="actual_salary" name="actual_salary" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="department_code">كود القسم</label>
+                        <input type="text" id="department_code" name="department_code">
+                    </div>
+                    <div class="form-group">
+                        <label for="department">القسم</label>
+                        <select id="department" name="department">
+                            <option value="">اختر القسم</option>
+                            <option value="الموارد البشرية">الموارد البشرية</option>
+                            <option value="المالية">المالية</option>
+                            <option value="تقنية المعلومات">تقنية المعلومات</option>
+                            <option value="التسويق">التسويق</option>
+                            <option value="العمليات">العمليات</option>
+                            <option value="الإدارة العامة">الإدارة العامة</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">البريد الإلكتروني</label>
+                        <input type="email" id="email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">رقم الهاتف</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn" id="submit-btn">إضافة الموظف</button>
+                <button type="button" class="btn btn-secondary" onclick="closeEmployeeModal()">إلغاء</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentEmployeeId = null;
+        let employees = [];
+        let allEmployees = [];
+        let departments = [];
+
+        // Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.getAttribute('data-section');
+                showSection(section);
+                
+                // Update active nav
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show target section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Load section-specific data
+            if (sectionId === 'dashboard') {
+                loadDashboardStats();
+            } else if (sectionId === 'employees') {
+                loadEmployees();
+                loadDepartmentsForFilter();
+            } else if (sectionId === 'leave-requests') {
+                loadDepartmentsForLeave();
+            }
+        }
+
+        // Dashboard functions
+        async function loadDashboardStats() {
+            try {
+                const response = await fetch('/api/statistics');
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('total-employees').textContent = stats.total_employees || 0;
+                    document.getElementById('avg-attendance').textContent = stats.avg_working_hours || 0;
+                    document.getElementById('departments-count').textContent = Object.keys(stats.employees_by_department || {}).length;
+                    document.getElementById('pending-requests').textContent = '0'; // Placeholder
+                }
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+            }
+        }
+
+        // Employee functions
+        async function loadEmployees() {
+            const tableBody = document.getElementById('employees-table-body');
+            tableBody.innerHTML = '<tr><td colspan="7" class="loading">جاري تحميل بيانات الموظفين...</td></tr>';
+            
+            try {
+                const response = await fetch('/api/employees');
+                if (response.ok) {
+                    allEmployees = await response.json();
+                    employees = [...allEmployees];
+                    displayEmployees(employees);
+                } else {
+                    tableBody.innerHTML = '<tr><td colspan="7">خطأ في تحميل بيانات الموظفين</td></tr>';
+                }
+            } catch (error) {
+                tableBody.innerHTML = '<tr><td colspan="7">خطأ في الاتصال بالخادم</td></tr>';
+            }
+        }
+
+        function displayEmployees(employeesList) {
+            const tableBody = document.getElementById('employees-table-body');
+            
+            if (employeesList.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7">لا توجد موظفين مسجلين</td></tr>';
+                return;
+            }
+            
+            tableBody.innerHTML = employeesList.map(emp => `
+                <tr>
+                    <td>
+                        <button class="btn" style="padding: 5px 10px; margin: 2px;" onclick="editEmployee(${emp.employee_id})">تعديل</button>
+                        <button class="btn btn-warning" style="padding: 5px 10px; margin: 2px;" onclick="deleteEmployee(${emp.employee_id})">حذف</button>
+                    </td>
+                    <td>${emp.actual_salary || 'غير محدد'}</td>
+                    <td>${emp.years_of_experience || 0}</td>
+                    <td>${emp.department || 'غير محدد'}</td>
+                    <td>${emp.job_title || 'غير محدد'}</td>
+                    <td>${emp.full_name}</td>
+                    <td>${emp.employee_id}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Excel Export/Import functions
+        async function exportToExcel() {
+            try {
+                showAlert('جاري تصدير البيانات إلى Excel...', 'info');
+                
+                const response = await fetch('/api/employees/export');
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = `employees_data_${new Date().toISOString().slice(0,10)}.xlsx`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                    
+                    showAlert('تم تصدير البيانات إلى Excel بنجاح!', 'success');
+                } else {
+                    const error = await response.json();
+                    showAlert('خطأ في تصدير البيانات: ' + (error.error || 'خطأ غير معروف'), 'error');
+                }
+            } catch (error) {
+                showAlert('خطأ في الاتصال بالخادم: ' + error.message, 'error');
+            }
+        }
+
+        async function importFromExcel() {
+            const fileInput = document.getElementById('excel-file-input');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showAlert('يرجى اختيار ملف Excel أولاً', 'error');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            const resultDiv = document.getElementById('import-result');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'import-result';
+            resultDiv.innerHTML = 'جاري استيراد البيانات...';
+            
+            try {
+                const response = await fetch('/api/employees/import', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'import-result success';
+                    let message = `تم الاستيراد بنجاح!<br>`;
+                    message += `موظفين جدد: ${result.imported_count}<br>`;
+                    message += `موظفين محدثين: ${result.updated_count}<br>`;
+                    message += `إجمالي المعالج: ${result.total_processed}`;
+                    
+                    if (result.errors_count > 0) {
+                        message += `<br>أخطاء: ${result.errors_count}`;
+                        if (result.errors) {
+                            message += '<br><small>' + result.errors.join('<br>') + '</small>';
+                        }
+                    }
+                    
+                    resultDiv.innerHTML = message;
+                    
+                    // تحديث قائمة الموظفين
+                    loadEmployees();
+                    
+                    // مسح اختيار الملف
+                    fileInput.value = '';
+                    
+                } else {
+                    resultDiv.className = 'import-result error';
+                    resultDiv.innerHTML = 'خطأ في الاستيراد: ' + (result.error || 'خطأ غير معروف');
+                }
+            } catch (error) {
+                resultDiv.className = 'import-result error';
+                resultDiv.innerHTML = 'خطأ في الاتصال بالخادم: ' + error.message;
+            }
+        }
+
+        // Filter functions
+        async function loadDepartmentsForFilter() {
+            try {
+                const response = await fetch('/api/departments_list');
+                if (response.ok) {
+                    const depts = await response.json();
+                    const select = document.getElementById('filter-department');
+                    select.innerHTML = '<option value="">جميع الأقسام</option>';
+                    depts.forEach(dept => {
+                        select.innerHTML += `<option value="${dept}">${dept}</option>`;
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading departments:', error);
+            }
+        }
+
+        function filterEmployees() {
+            const departmentFilter = document.getElementById('filter-department').value;
+            const searchFilter = document.getElementById('filter-search').value.toLowerCase();
+            
+            let filteredEmployees = allEmployees;
+            
+            if (departmentFilter) {
+                filteredEmployees = filteredEmployees.filter(emp => emp.department === departmentFilter);
+            }
+            
+            if (searchFilter) {
+                filteredEmployees = filteredEmployees.filter(emp => 
+                    emp.full_name.toLowerCase().includes(searchFilter) ||
+                    emp.employee_id.toString().includes(searchFilter)
+                );
+            }
+            
+            displayEmployees(filteredEmployees);
+        }
+
+        function clearFilters() {
+            document.getElementById('filter-department').value = '';
+            document.getElementById('filter-search').value = '';
+            displayEmployees(allEmployees);
+        }
+
+        function showAddEmployeeForm() {
+            currentEmployeeId = null;
+            document.getElementById('modal-title').textContent = 'إضافة موظف جديد';
+            document.getElementById('submit-btn').textContent = 'إضافة الموظف';
+            document.getElementById('employeeForm').reset();
+            document.getElementById('employeeModal').style.display = 'block';
+        }
+
+        function editEmployee(employeeId) {
+            const employee = allEmployees.find(emp => emp.employee_id === employeeId);
+            if (!employee) return;
+            
+            currentEmployeeId = employeeId;
+            document.getElementById('modal-title').textContent = 'تعديل بيانات الموظف';
+            document.getElementById('submit-btn').textContent = 'حفظ التعديلات';
+            
+            // Fill form with employee data
+            Object.keys(employee).forEach(key => {
+                const input = document.getElementById(key);
+                if (input) {
+                    input.value = employee[key] || '';
+                }
+            });
+            
+            document.getElementById('employeeModal').style.display = 'block';
+        }
+
+        function closeEmployeeModal() {
+            document.getElementById('employeeModal').style.display = 'none';
+            currentEmployeeId = null;
+        }
+
+        // Employee form submission
+        document.getElementById('employeeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري الحفظ...';
+            
+            const formData = new FormData(this);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (value.trim() !== '') {
+                    if (['actual_salary', 'salary_from_system'].includes(key)) {
+                        data[key] = parseFloat(value) || 0;
+                    } else if (['employee_id', 'points_count', 'years_of_experience'].includes(key)) {
+                        data[key] = parseInt(value) || 0;
+                    } else {
+                        data[key] = value;
+                    }
+                }
+            }
+            
+            try {
+                const url = currentEmployeeId ? `/api/employees/${currentEmployeeId}` : '/api/employees';
+                const method = currentEmployeeId ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    showAlert(currentEmployeeId ? 'تم تحديث بيانات الموظف بنجاح!' : 'تم إضافة الموظف بنجاح!', 'success');
+                    closeEmployeeModal();
+                    loadEmployees();
+                } else {
+                    const error = await response.json();
+                    showAlert('خطأ: ' + (error.error || 'خطأ غير معروف'), 'error');
+                }
+            } catch (error) {
+                showAlert('خطأ في الاتصال بالخادم: ' + error.message, 'error');
+            }
+            
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        });
+
+        async function deleteEmployee(employeeId) {
+            if (!confirm('هل أنت متأكد من حذف هذا الموظف؟')) return;
+            
+            try {
+                const response = await fetch(`/api/employees/${employeeId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    showAlert('تم حذف الموظف بنجاح!', 'success');
+                    loadEmployees();
+                } else {
+                    showAlert('خطأ في حذف الموظف', 'error');
+                }
+            } catch (error) {
+                showAlert('خطأ في الاتصال بالخادم', 'error');
+            }
+        }
+
+        // Leave request functions
+        async function loadDepartmentsForLeave() {
+            try {
+                const response = await fetch('/api/departments_list');
+                if (response.ok) {
+                    const depts = await response.json();
+                    const select = document.getElementById('leave-department');
+                    select.innerHTML = '<option value="">اختر القسم</option>';
+                    depts.forEach(dept => {
+                        select.innerHTML += `<option value="${dept}">${dept}</option>`;
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading departments:', error);
+            }
+        }
+
+        async function loadEmployeesByDepartment() {
+            const department = document.getElementById('leave-department').value;
+            const employeeSelect = document.getElementById('leave-employee-select');
+            
+            if (!department) {
+                employeeSelect.innerHTML = '<option value="">اختر الموظف</option>';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/employees_by_department/${encodeURIComponent(department)}`);
+                if (response.ok) {
+                    const employees = await response.json();
+                    employeeSelect.innerHTML = '<option value="">اختر الموظف</option>';
+                    employees.forEach(emp => {
+                        employeeSelect.innerHTML += `<option value="${emp.employee_id}">${emp.full_name} (${emp.employee_id})</option>`;
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading employees by department:', error);
+            }
+        }
+
+        function calculateLeaveDays() {
+            const startDate = document.getElementById('leave-start-date').value;
+            const endDate = document.getElementById('leave-end-date').value;
+            
+            if (startDate && endDate) {
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                const daysDiff = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+                document.getElementById('leave-days').value = daysDiff > 0 ? daysDiff : 0;
+            }
+        }
+
+        function showLeaveRequestForm() {
+            document.getElementById('leave-request-form').style.display = 'block';
+            document.getElementById('leave-requests-list').style.display = 'none';
+        }
+
+        function hideLeaveRequestForm() {
+            document.getElementById('leave-request-form').style.display = 'none';
+        }
+
+        async function loadLeaveRequests() {
+            document.getElementById('leave-request-form').style.display = 'none';
+            document.getElementById('leave-requests-list').style.display = 'block';
+            
+            const tableBody = document.getElementById('leave-requests-table-body');
+            tableBody.innerHTML = '<tr><td colspan="7" class="loading">جاري تحميل طلبات الإجازات...</td></tr>';
+            
+            try {
+                const [requestsResponse, employeesResponse] = await Promise.all([
+                    fetch('/api/leave-requests'),
+                    fetch('/api/employees')
+                ]);
+                
+                if (requestsResponse.ok && employeesResponse.ok) {
+                    const requests = await requestsResponse.json();
+                    const employees = await employeesResponse.json();
+                    
+                    const employeeMap = {};
+                    employees.forEach(emp => {
+                        employeeMap[emp.employee_id] = emp.full_name;
+                    });
+                    
+                    if (requests.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="7">لا توجد طلبات إجازات</td></tr>';
+                        return;
+                    }
+                    
+                    tableBody.innerHTML = requests.map(req => `
+                        <tr>
+                            <td><span style="color: ${req.status === 'approved' ? 'green' : req.status === 'rejected' ? 'red' : 'orange'}">${req.status === 'pending' ? 'معلق' : req.status === 'approved' ? 'موافق عليه' : 'مرفوض'}</span></td>
+                            <td>${req.days_requested}</td>
+                            <td>${req.end_date}</td>
+                            <td>${req.start_date}</td>
+                            <td>${req.leave_type === 'annual' ? 'سنوية' : req.leave_type === 'sick' ? 'مرضية' : req.leave_type === 'casual' ? 'عارضة' : 'أخرى'}</td>
+                            <td>${employeeMap[req.employee_id] || 'غير معروف'}</td>
+                            <td>${req.employee_id}</td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tableBody.innerHTML = '<tr><td colspan="7">خطأ في تحميل طلبات الإجازات</td></tr>';
+                }
+            } catch (error) {
+                tableBody.innerHTML = '<tr><td colspan="7">خطأ في الاتصال بالخادم</td></tr>';
+            }
+        }
+
+        // Leave request form submission
+        document.getElementById('leaveRequestForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const data = {
+                employee_id: parseInt(document.getElementById('leave-employee-select').value),
+                leave_type: document.getElementById('leave-type').value,
+                start_date: document.getElementById('leave-start-date').value,
+                end_date: document.getElementById('leave-end-date').value,
+                days_requested: parseInt(document.getElementById('leave-days').value),
+                reason: document.getElementById('leave-reason').value
+            };
+            
+            try {
+                const response = await fetch('/api/leave-requests', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    showAlert('تم تقديم طلب الإجازة بنجاح!', 'success');
+                    this.reset();
+                    document.getElementById('leave-employee-select').innerHTML = '<option value="">اختر الموظف</option>';
+                    hideLeaveRequestForm();
+                } else {
+                    const error = await response.json();
+                    showAlert('خطأ: ' + (error.error || 'خطأ غير معروف'), 'error');
+                }
+            } catch (error) {
+                showAlert('خطأ في الاتصال بالخادم: ' + error.message, 'error');
+            }
+        });
+
+        // Report functions
+        function generateReport() {
+            document.getElementById('report-content').style.display = 'block';
+            showAlert('تم إنشاء التقرير بنجاح! (نموذج تجريبي)', 'info');
+        }
+
+        function exportReport() {
+            showAlert('سيتم تصدير التقرير قريباً...', 'info');
+        }
+
+        // Placeholder functions for other features
+        function showBonusForm() {
+            showAlert('نموذج إضافة مكافأة قيد التطوير', 'info');
+        }
+
+        function showDeductionForm() {
+            showAlert('نموذج إضافة خصم قيد التطوير', 'info');
+        }
+
+        function viewPayrollHistory() {
+            showAlert('عرض سجل الرواتب قيد التطوير', 'info');
+        }
+
+        function recordAttendance() {
+            showAlert('تسجيل الحضور قيد التطوير', 'info');
+        }
+
+        function viewAttendanceReport() {
+            showAlert('تقرير الحضور قيد التطوير', 'info');
+        }
+
+        function exportAttendance() {
+            showAlert('تصدير بيانات الحضور قيد التطوير', 'info');
+        }
+
+        // Alert function
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert');
+            alert.innerHTML = message;
+            alert.className = `alert ${type}`;
+            alert.style.display = 'block';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        // Initialize dashboard on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboardStats();
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('employeeModal');
+            if (event.target === modal) {
+                closeEmployeeModal();
+            }
+        }
+    </script>
+</body>
+</html>
+
